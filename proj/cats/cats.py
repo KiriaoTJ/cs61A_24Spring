@@ -31,6 +31,13 @@ def pick(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    cnt = 0
+    for s in paragraphs:
+        if select(s):
+            if cnt == k:
+                return s
+            cnt += 1
+    return ''
     # END PROBLEM 1
 
 
@@ -50,6 +57,16 @@ def about(subject):
     assert all([lower(x) == x for x in subject]), 'subjects should be lowercase.'
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    def is_contained(s_para):
+        s_para = remove_punctuation(s_para)
+        s_para = lower(s_para)
+        paragraph = split(s_para)
+        for s in paragraph:
+            if s in subject:
+                return True
+        return False
+    return is_contained
+
     # END PROBLEM 2
 
 
@@ -80,6 +97,17 @@ def accuracy(typed, source):
     source_words = split(source)
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if (typed and not source) or (not typed and source):
+        return 0.0
+    elif not typed and not source:
+        return 100.0
+    else:
+        cnt : int = 0
+        minLen : int = min(len(typed_words), len(source_words))
+        for i in range(0, minLen):
+            if typed_words[i] == source_words[i]:
+                cnt += 1
+        return cnt / len(typed_words) * 100
     # END PROBLEM 3
 
 
@@ -98,6 +126,7 @@ def wpm(typed, elapsed):
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    return (len(typed) / 5) / (elapsed / 60)
     # END PROBLEM 4
 
 
@@ -127,7 +156,12 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     """
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
-    # END PROBLEM 5
+    if typed_word in word_list:
+        return typed_word
+    else:
+        ans_word = min(word_list, key = lambda word : diff_function(typed_word, word, limit))
+        return typed_word if diff_function(typed_word, ans_word, limit) > limit else ans_word
+        # END PROBLEM 5
 
 
 def feline_fixes(typed, source, limit):
@@ -154,6 +188,8 @@ def feline_fixes(typed, source, limit):
     """
     # BEGIN PROBLEM 6
     assert False, 'Remove this line'
+    def dfs(s1, s2, cnt):
+        
     # END PROBLEM 6
 
 
